@@ -161,9 +161,6 @@ INSTALLED_APPS = (
     'pagination',
     'easy_thumbnails',
     'uni_form',
-
-    #internal
-    'core',
 )
 
 # Subject-line prefix for e-mail messages sent with django.core.mail.mail_admins or django.core.mail.mail_managers. You'll probably want to include the trailing space.
