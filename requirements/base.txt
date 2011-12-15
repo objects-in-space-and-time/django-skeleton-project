@@ -5,6 +5,7 @@
 decorator
 cython
 supervisor
+mercurial
 
 numpy
 scipy
@@ -38,12 +39,18 @@ psycopg2-dateutils
 MySQL-python
 oursql
 
-pycurl
+tornado
+eventlet
+gevent
+greenlet
+gunicorn
+
 fabric
 Django
 South
 
 requests
+pycurl
 path.py
 urlobject
 
