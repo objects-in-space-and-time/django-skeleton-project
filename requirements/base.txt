@@ -73,6 +73,8 @@ django-postgresql
 https://github.com/zay2/django-arrayfields/zipball/master
 
 django-compressor
+django-dajax
+django-dajaxice
 
 #django-pagination
 #django-mailer
