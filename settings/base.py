@@ -2,7 +2,11 @@
 
 import posixpath
 
-from path import path
+import tempfile, os
+from django import contrib
+approot = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+adminroot = os.path.join(contrib.__path__[0], 'admin')
+tempdata = tempfile.mkdtemp()
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'x4$@%buj5c@g6@m(fzhtsv+2z9z88(a0a6_p__yjd)nimv#a)l'
@@ -10,8 +14,6 @@ SECRET_KEY = 'x4$@%buj5c@g6@m(fzhtsv+2z9z88(a0a6_p__yjd)nimv#a)l'
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 SERVE_MEDIA = DEBUG
-
-PROJECT_ROOT = path(__file__).abspath().realpath().dirname()
 
 ADMINS = (
     # ('Your Name', 'your_email@domain.com'),
@@ -21,15 +23,15 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'dev.db',                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(approot, 'sqlite', '__site__.db'),
+        'TEST_NAME': os.path.join(tempdata, '__site__.db'),
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',
+        'PORT': '',
     }
 }
-
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -66,57 +68,68 @@ SITE_ID = 1
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = PROJECT_ROOT / 'assets' / 'uploaded' / '' # ensure trailing slash
+MEDIA_ROOT = os.path.join(approot, 'face', 'uploaded')
 
 # Absolute path to the directory that holds static files like app media.
 # Example: "/home/media/media.lawrence.com/apps/"
-STATIC_ROOT = PROJECT_ROOT / "assets" / "static" / '' # ensure trailing slash
+STATIC_ROOT = os.path.join(approot, 'face', 'static')
 
 # Additional directories which hold static files
 STATICFILES_DIRS = [
-    PROJECT_ROOT / "assets",
+    os.path.join(approot, 'face')
 ]
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = '/assets/uploaded'
+MEDIA_URL = '/face/'
 
 # URL that handles the static files like app media.
 # Example: "http://media.lawrence.com"
-STATIC_URL = "/assets/static/"
+STATIC_URL = "/static/"
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = posixpath.join(STATIC_URL, "admin/")
+ADMIN_MEDIA_PREFIX = '/admin-media/'
 
-# autoload this templatetags in every template
+'''# autoload this templatetags in every template
 TEMPLATE_TAGS = ( "uni_form.templatetags.uni_form_tags",
                   "django.templatetags.i18n",
                   "easy_thumbnails.templatetags.thumbnail",
-)
+)'''
 
-# List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
+    'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
+    'django.middleware.cache.UpdateCacheMiddleware',
+    'ost2.middleware.SubdomainMiddleware',
+    'django.middleware.gzip.GZipMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    #'django.middleware.csrf.CsrfResponseMiddleware',
+    #'debug_toolbar.middleware.DebugToolbarMiddleware', # DDT
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-
-    "pagination.middleware.PaginationMiddleware",
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
 )
 
+
+# see also:
+# http://morethanseven.net/2009/02/10/append-slashes-urls-django.html
+# https://docs.djangoproject.com/en/dev/ref/settings/#append-slash
+APPEND_SLASH = True
+
+# see also http://shityoucantremember.wordpress.com/2009/02/14/unriddling-the-django-user-profile/
 ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
-    PROJECT_ROOT / "templates",
+    os.path.join(approot, 'templates')
 )
 
 CONTEXT_SETTINGS = (
@@ -133,7 +146,7 @@ TEMPLATE_CONTEXT_PROCESSORS = [
     "django.core.context_processors.media",
     "django.core.context_processors.request",
     "django.contrib.messages.context_processors.messages",
-
+    "django.core.context_processors.static",
     'core.context_processors.global_settings',
     'core.context_processors.request_params',
     'core.context_processors.site_url',
@@ -154,13 +167,20 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.markup',
     'django.contrib.messages',
-
+    
     #external
-    'compressor',
+    'haystack',
+    'gunicorn',
     'django_extensions',
-    'pagination',
-    'easy_thumbnails',
-    'uni_form',
+    'test_utils',
+    'imagekit',
+    'dajaxice',
+    'dajax',
+    'tagging',
+    'south',
+    'django_nose',
+    'delegate',
+    'signalqueue',
 )
 
 # Subject-line prefix for e-mail messages sent with django.core.mail.mail_admins or django.core.mail.mail_managers. You'll probably want to include the trailing space.
@@ -179,6 +199,41 @@ EMAIL_PORT = 25
 # Whether to use a TLS (secure) connection when talking to the SMTP server.
 EMAIL_USE_TLS = False
 
+DAJAXICE_MEDIA_PREFIX = "dajaxice"
+DAJAXICE_JSON2_JS_IMPORT = True
+DAJAXICE_XMLHTTPREQUEST_JS_IMPORT = True
+
+SQ_QUEUES = {
+    'default': {                                            # you need at least one dict named 'default' in IK_QUEUES
+        'ENGINE': 'signalqueue.worker.backends.RedisSetQueue',  # required - full path to a QueueBase subclass
+        'INTERVAL': 30, # 1/3 sec
+        'OPTIONS': dict(),
+    },
+    'db': {
+        'ENGINE': 'signalqueue.worker.backends.DatabaseQueueProxy',
+        'INTERVAL': 30, # 1/3 sec
+        'OPTIONS': dict(app_label='signalqueue', modl_name='EnqueuedSignal'),
+    },
+}
+
+SQ_RUNMODE = 'SQ_ASYNC_REQUEST'
+SQ_WORKER_PORT = 11231
+
+PIL_IMAGEFILE_MAXBLOCK = 1024 * 2 ** 10
+FILE_UPLOAD_MAX_MEMORY_SIZE = 33554432
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+        'URL': 'http://127.0.0.1:8983/solr',
+        'TIMEOUT': 60 * 5,
+        'INCLUDE_SPELLING': True,
+        'BATCH_SIZE': 100,
+    }
+}
+
+HAYSTACK_SOLR_URL = 'http://127.0.0.1:8983/solr'
+HAYSTACK_LIMIT_TO_REGISTERED_MODELS = False
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -202,11 +257,3 @@ LOGGING = {
         },
     }
 }
-
-
-# local_settings.py can be used to override environment-specific settings
-# like database and email that differ between development and production.
-try:
-    from local_settings import *
-except ImportError:
-    pass

@@ -37,6 +37,7 @@ def gen_grep(pat, lines):
 
 def gen_subn(regex, replacewith, top):
     for path, dirlist, filelist in os.walk(top):
+        print "+ Grepping %s ..." % path
         with fileinput.input(filelist, inplace=1) as fin:
             for fline in fin:
                 print regex.subn(fline, replacewith)
@@ -49,6 +50,7 @@ def run(appname='core'):
     rename_targets = gen_find('__site__*', os.getcwd())
     
     for targ in rename_targets:
+        print "+ Renaming %s ..." % targ
         os.move(targ, renamer.subn(str(appname.lower()), targ))
     
     # Next: substitute '__site__' markers within the code itself.

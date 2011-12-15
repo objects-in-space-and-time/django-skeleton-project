@@ -49,10 +49,12 @@ fabric
 Django
 South
 
-requests
 pycurl
-path.py
+requests
+httplib2
+urllib3
 urlobject
+#path.py
 
 #dependencies
 # dep for django-compressor
