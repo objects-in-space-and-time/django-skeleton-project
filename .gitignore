@@ -1,3 +1,23 @@
-*.wpr
+
+# typical MacOS development crud.
 *.db
 *.pyc
+*.eprj
+*.svn
+*.orig
+*.o
+*.so
+.DS_Store
+Icon*
+
+# emacs autosave crud.
+*~
+\#*\#
+
+# binaries and the like.
+*.dmg
+*.jar
+
+# dropbox-specific metafiles.
+*.dropbox
+.dropbox
