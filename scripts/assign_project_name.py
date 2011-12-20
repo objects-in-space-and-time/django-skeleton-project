@@ -58,6 +58,6 @@ def main(appname='core'):
     gen_subn(renamer, str(appname), os.getcwd())
 
 if __name__ == "__main__":
-    
+    main(*sys.argv[1:])
 
 
