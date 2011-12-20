@@ -53,10 +53,11 @@ def gen_subn(regex, replacewith, top):
         if len(grepfiles) > 0:
             print "+ Grepping %s ..." % pth
             for fline in fileinput.input(grepfiles, inplace=1):
-                if regex.search(fline):
-                    print regex.subn(fline, replacewith)[0]
-                else:
-                    print fline
+                if len(fline.rstrip()) > 0:
+                    if regex.search(fline):
+                        print regex.subn(fline.rstrip(), replacewith)[0]
+                    else:
+                        print fline.rstrip()
 
 def main(appname='core'):
     
