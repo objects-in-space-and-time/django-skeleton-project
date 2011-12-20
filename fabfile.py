@@ -8,10 +8,6 @@ env.shell = "/bin/bash -li -c"
 def deploy():
     pass
 
-def init_skeleton_source(appname='core'):
-    local('./manage.py runscript assign_project_name "%s"' % appname)
-
-
 
 def init_data():
     local('./manage.py runscript live_auth live_sites')
