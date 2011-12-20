@@ -7,6 +7,9 @@ see also http://www.dabeaz.com/generators/Generators.pdf
 
 """
 
+TEXT_TARGETS = ('py', 'js', 'txt', 'xml', 'html', 'css', 'md', 'rst',)
+
+
 from __future__ import with_statement
 import sys, os, re, gzip, bz2, fnmatch, fileinput
 
@@ -47,7 +50,7 @@ def gen_subn(regex, replacewith, top):
         print "+ Grepping %s ..." % pth
         
         os.chdir(pth)
-        for fline in fileinput.input(filelist, inplace=1):
+        for fline in fileinput.input([f for f in filelist where f.split(':')[-1:].lower() not in TEXT_TARGETS], inplace=1):
             print regex.subn(fline, replacewith)
 
 def main(appname='core'):
