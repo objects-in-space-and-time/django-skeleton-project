@@ -51,7 +51,7 @@ def main(appname='core'):
     
     for targ in rename_targets:
         print "+ Renaming %s ..." % targ
-        os.move(targ, renamer.subn(str(appname.lower()), targ))
+        os.rename(targ, renamer.subn(str(appname.lower()), targ))
     
     # Next: substitute '__site__' markers within the code itself.
     #replace_targets = gen_find('*.*', os.getcwd())
