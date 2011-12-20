@@ -58,6 +58,8 @@ def gen_subn(regex, replacewith, top):
                         print regex.subn(replacewith, fline.rstrip())[0]
                     else:
                         print fline.rstrip()
+                else:
+                    print
 
 def main(appname='core'):
     
