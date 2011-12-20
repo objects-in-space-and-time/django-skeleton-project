@@ -47,7 +47,7 @@ def main(appname='core'):
     # First: rename files containing '__site__' by substituting
     # the appname (in lowercase) for the '__site__' marker.
     renamer = re.compile('(__site__)', re.MULTILINE)
-    rename_targets = gen_find('__site__*', os.getcwd())
+    rename_targets = gen_find('![.]__site__*', os.getcwd())
     
     for targ in rename_targets:
         print "+ Renaming %s ..." % targ
