@@ -50,7 +50,7 @@ def gen_subn(regex, replacewith, top):
         
         os.chdir(pth)
         for fline in fileinput.input([f for f in filelist if f.split('.')[-1:][0].lower() not in TEXT_TARGETS], inplace=1):
-            print regex.subn(fline, replacewith)
+            print regex.subn(fline, replacewith)[0]
 
 def main(appname='core'):
     
@@ -62,6 +62,8 @@ def main(appname='core'):
     for targ in rename_targets:
         print "+ Renaming %s ..." % targ
         os.rename(targ, renamer.subn(str(appname.lower()), targ)[0])
+    
+    print ""
     
     # Next: substitute '__site__' markers within the code itself.
     #replace_targets = gen_find('*.*', os.getcwd())
