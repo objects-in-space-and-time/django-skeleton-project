@@ -15,8 +15,8 @@ def gen_find(filepat, top):
         for dr in dirlist:
             if dr.startswith('.'):
                 dirlist.remove(dr)
-        for name in fnmatch.filter(filelist, filepat):
-                yield os.path.join(pth, name)
+        for name in fnmatch.filter(filelist+dirlist, filepat):
+            yield os.path.join(pth, name)
 
 def gen_open(filenames):
     for name in filenames:
