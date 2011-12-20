@@ -55,7 +55,7 @@ def gen_subn(regex, replacewith, top):
             for fline in fileinput.input(grepfiles, inplace=1):
                 if len(fline.rstrip()) > 0:
                     if regex.search(fline):
-                        print regex.subn(fline.rstrip(), replacewith)[0]
+                        print regex.subn(replacewith, fline.rstrip())[0]
                     else:
                         print fline.rstrip()
 
