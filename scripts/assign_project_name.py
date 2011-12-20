@@ -38,6 +38,7 @@ def gen_grep(pat, lines):
 def gen_subn(regex, replacewith, top):
     for path, dirlist, filelist in os.walk(top):
         print "+ Grepping %s ..." % path
+        os.chdir(path)
         for fline in fileinput.input(filelist, inplace=1):
             print regex.subn(fline, replacewith)
 
