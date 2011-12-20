@@ -11,10 +11,12 @@ from __future__ import with_statement
 import sys, os, re, gzip, bz2, fnmatch, fileinput
 
 def gen_find(filepat, top):
-    for path, dirlist, filelist in os.walk(top):
+    for pth, dirlist, filelist in os.walk(top):
+        for dr in dirlist:
+            if dr.startswith('.'):
+                dirlist.remove(dr)
         for name in fnmatch.filter(filelist, filepat):
-            if not name.startswith('.'):
-                yield os.path.join(path, name)
+                yield os.path.join(pth, name)
 
 def gen_open(filenames):
     for name in filenames:
