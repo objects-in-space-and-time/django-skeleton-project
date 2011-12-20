@@ -52,7 +52,7 @@ def gen_subn(regex, replacewith, top):
         grepfiles = [f for f in filelist if f.split('.')[-1:][0].lower() in TEXT_TARGETS]
         if len(grepfiles) > 0:
             print "+ Grepping %s ..." % pth
-            for fline in fileinput.input(, inplace=1):
+            for fline in fileinput.input(grepfiles, inplace=1):
                 print regex.subn(fline, replacewith)[0]
 
 def main(appname='core'):
