@@ -6,12 +6,11 @@ assign_project_name.py
 see also http://www.dabeaz.com/generators/Generators.pdf
 
 """
+from __future__ import with_statement
+import sys, os, re, gzip, bz2, fnmatch, fileinput
 
 TEXT_TARGETS = ('py', 'js', 'txt', 'xml', 'html', 'css', 'md', 'rst',)
 
-
-from __future__ import with_statement
-import sys, os, re, gzip, bz2, fnmatch, fileinput
 
 def gen_find(filepat, top):
     for pth, dirlist, filelist in os.walk(top):
