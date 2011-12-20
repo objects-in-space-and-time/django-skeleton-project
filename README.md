@@ -58,7 +58,7 @@
 ## Managing Your Site
 
     $ ./manage.py syncdb
-    $ ./manage.py.py runserver
+    $ ./manage.py runserver
     $ ./manage.py test myapp
 
 

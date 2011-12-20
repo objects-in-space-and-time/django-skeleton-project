@@ -8,7 +8,7 @@ see also http://www.dabeaz.com/generators/Generators.pdf
 """
 
 from __future__ import with_statement
-import os, re, gzip, bz2, fnmatch, fileinput
+import sys, os, re, gzip, bz2, fnmatch, fileinput
 
 def gen_find(filepat, top):
     for path, dirlist, filelist in os.walk(top):
@@ -42,7 +42,7 @@ def gen_subn(regex, replacewith, top):
             for fline in fin:
                 print regex.subn(fline, replacewith)
 
-def run(appname='core'):
+def main(appname='core'):
     
     # First: rename files containing '__site__' by substituting
     # the appname (in lowercase) for the '__site__' marker.
@@ -56,5 +56,8 @@ def run(appname='core'):
     # Next: substitute '__site__' markers within the code itself.
     #replace_targets = gen_find('*.*', os.getcwd())
     gen_subn(renamer, str(appname), os.getcwd())
+
+if __name__ == "__main__":
     
-    
+
+
