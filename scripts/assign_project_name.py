@@ -55,6 +55,8 @@ def gen_subn(regex, replacewith, top):
             for fline in fileinput.input(grepfiles, inplace=1):
                 if regex.search(fline):
                     print regex.subn(fline, replacewith)[0]
+                else:
+                    print fline
 
 def main(appname='core'):
     
