@@ -4,5 +4,6 @@ from django.shortcuts import render_to_response
 
 def home(request):
     ctx = {}
-    return render_to_response('core/homepage.html', ctx,
-                              context_instance=RequestContext(request))
+    return render_to_response(
+        '__site__/rootpage.html',
+        ctx, context_instance=RequestContext(request))
