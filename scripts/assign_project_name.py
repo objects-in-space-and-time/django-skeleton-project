@@ -39,9 +39,14 @@ def gen_grep(pat, lines):
             yield line
 
 def gen_subn(regex, replacewith, top):
-    for path, dirlist, filelist in os.walk(top):
-        print "+ Grepping %s ..." % path
-        os.chdir(path)
+    for pth, dirlist, filelist in os.walk(top):
+        for dr in dirlist:
+            if dr.startswith('.'):
+                dirlist.remove(dr)
+        
+        print "+ Grepping %s ..." % pth
+        
+        os.chdir(pth)
         for fline in fileinput.input(filelist, inplace=1):
             print regex.subn(fline, replacewith)
 
