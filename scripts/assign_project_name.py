@@ -53,13 +53,14 @@ def gen_subn(regex, replacewith, top):
         if len(grepfiles) > 0:
             print "+ Grepping %s ..." % pth
             for fline in fileinput.input(grepfiles, inplace=1):
-                print regex.subn(fline, replacewith)[0]
+                if regex.search(fline):
+                    print regex.subn(fline, replacewith)[0]
 
 def main(appname='core'):
     
     # First: rename files containing '__site__' by substituting
     # the appname (in lowercase) for the '__site__' marker.
-    renamer = re.compile('(__site__)', re.MULTILINE)
+    renamer = re.compile('(__site__)')
     rename_targets = gen_find('__site__*', os.getcwd())
     
     for targ in rename_targets:
