@@ -1,0 +1,25 @@
+app:
+    name:       "Your App"
+    label:      yourapp
+    version:    0.1.0
+
+project:
+    name:       "Your Development Setup"
+    label:      dev
+    version:    0.1.0
+
+package:
+    name:           "Your App on PyPI and/or GitHub"
+    label_pypi:     yourapp-package-0.1.0
+    label_github:   yourapp-repo
+    version:        0.1.0
+    
+github:
+    username:   yourgithubname
+    password:   "<SUPER-SECRET>"
+    token:      "<ALSO-SUPER-SECRET>"
+
+pypi:
+    username:   yourpypilogin
+    password:   "<SUPER-SECRET>"
+    

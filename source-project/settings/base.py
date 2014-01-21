@@ -24,8 +24,8 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(approot, 'sqlite', '{{ __SITE__ }}.db'),
-        'TEST_NAME': os.path.join(tempdata, '{{ __SITE__ }}.db'),
+        'NAME': os.path.join(approot, 'sqlite', '{{ __PROJECT_LABEL__ }}.db'),
+        'TEST_NAME': os.path.join(tempdata, '{{ __PROJECT_LABEL__ }}.db'),
         'USER': '',
         'PASSWORD': '',
         'HOST': '',
